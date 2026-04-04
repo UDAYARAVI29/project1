@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  ANALYST
+  VIEWER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum EntryType {
+  INCOME
+  EXPENSE
+}
+
+model User {
+  id           String          @id @default(uuid()) @db.Uuid
+  name         String          @db.VarChar(100)
+  email        String          @unique @db.VarChar(255)
+  passwordHash String          @map("password_hash")
+  role         Role
+  status       UserStatus
+  createdById  String?         @map("created_by_id") @db.Uuid
+  createdBy    User?           @relation("UserCreator", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdUsers User[]          @relation("UserCreator")
+  records      FinanceRecord[]
+  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([role, status], map: "idx_users_role_status")
+  @@map("users")
+}
+
+model FinanceRecord {
+  id          String    @id @default(uuid()) @db.Uuid
+  amount      Decimal   @db.Decimal(12, 2)
+  type        EntryType
+  category    String    @db.VarChar(100)
+  date        DateTime  @db.Timestamptz(6)
+  description String?
+  createdById String    @map("created_by_id") @db.Uuid
+  createdBy   User      @relation(fields: [createdById], references: [id], onDelete: Restrict, onUpdate: NoAction)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([type, date(sort: Desc)], map: "idx_finance_records_type_date")
+  @@index([category], map: "idx_finance_records_category")
+  @@map("finance_records")
+}

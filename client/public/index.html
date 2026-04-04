@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finance Control Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <section id="loginView" class="login-view">
+      <div class="login-shell">
+        <aside class="login-brand">
+          <p class="eyebrow">Finance Data Processing and Access Control</p>
+          <h1>Finance Control Center</h1>
+          <p class="lead">
+            A complete assignment demo with role-based access, user management, financial
+            records, dashboard summaries, and a cleaner operator-style frontend.
+          </p>
+
+          <div class="credential-grid">
+            <article class="credential-card">
+              <span>Admin</span>
+              <strong>admin@finance.local</strong>
+              <code>Password@123</code>
+            </article>
+            <article class="credential-card">
+              <span>Analyst</span>
+              <strong>analyst@finance.local</strong>
+              <code>Password@123</code>
+            </article>
+            <article class="credential-card">
+              <span>Viewer</span>
+              <strong>viewer@finance.local</strong>
+              <code>Password@123</code>
+            </article>
+          </div>
+        </aside>
+
+        <section class="login-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Sign In</p>
+              <h2>Access the dashboard</h2>
+            </div>
+          </div>
+
+          <form id="loginForm" class="form-single">
+            <label>
+              <span>Backend URL</span>
+              <input id="apiBaseUrl" type="text" value="http://localhost:4000" />
+            </label>
+            <label>
+              <span>Email</span>
+              <input id="email" type="email" value="admin@finance.local" />
+            </label>
+            <label>
+              <span>Password</span>
+              <input id="password" type="password" value="Password@123" />
+            </label>
+            <button type="submit" class="primary-button">Enter Control Center</button>
+          </form>
+
+          <div class="login-notes">
+            <div class="note-card">
+              <strong>Viewer</strong>
+              <span>Dashboard summary only</span>
+            </div>
+            <div class="note-card">
+              <strong>Analyst</strong>
+              <span>Dashboard plus records access</span>
+            </div>
+            <div class="note-card">
+              <strong>Admin</strong>
+              <span>Full records and user management</span>
+            </div>
+          </div>
+
+          <p id="loginMessage" class="message"></p>
+        </section>
+      </div>
+    </section>
+
+    <div id="dashboardView" class="dashboard-shell hidden">
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <p class="eyebrow">Operator Console</p>
+          <h2>Finance Control</h2>
+          <div id="sessionInfo" class="session-card"></div>
+        </div>
+
+        <nav class="nav-stack">
+          <button class="nav-button active" data-view="overviewView" type="button">Overview</button>
+          <button class="nav-button" data-view="recordsView" type="button">Records</button>
+          <button class="nav-button admin-only hidden" data-view="usersView" type="button">Users</button>
+        </nav>
+
+        <div class="sidebar-meta">
+          <div class="meta-card">
+            <span>Frontend</span>
+            <strong>http://localhost:3000</strong>
+          </div>
+          <div class="meta-card">
+            <span>API Docs</span>
+            <strong>http://localhost:4000/api/docs</strong>
+          </div>
+        </div>
+
+        <button id="logoutButton" class="ghost-button full-button" type="button">Log out</button>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Workspace</p>
+            <h1 id="viewTitle">Overview</h1>
+          </div>
+          <div class="topbar-actions">
+            <button id="refreshButton" class="ghost-button" type="button">Refresh</button>
+          </div>
+        </header>
+
+        <section id="overviewView" class="view-panel">
+          <div class="metrics-grid" id="summaryCards"></div>
+
+          <div class="layout-grid">
+            <section class="surface-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Breakdown</p>
+                  <h3>Category totals</h3>
+                </div>
+              </div>
+              <div id="categoryTotals" class="list-stack empty-state">Login to load data.</div>
+            </section>
+
+            <section class="surface-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Patterns</p>
+                  <h3>Monthly trends</h3>
+                </div>
+              </div>
+              <div id="monthlyTrends" class="list-stack empty-state">Login to load data.</div>
+            </section>
+          </div>
+
+          <section class="surface-card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Activity</p>
+                <h3>Recent records</h3>
+              </div>
+            </div>
+            <div id="recentActivity" class="list-stack empty-state">Login to load data.</div>
+          </section>
+        </section>
+
+        <section id="recordsView" class="view-panel hidden">
+          <section id="adminRecordsSection" class="surface-card hidden">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Admin Controls</p>
+                <h3>Create finance record</h3>
+              </div>
+            </div>
+
+            <form id="recordForm" class="form-grid">
+              <label>
+                <span>Amount</span>
+                <input id="recordAmount" type="number" min="0.01" step="0.01" required />
+              </label>
+              <label>
+                <span>Type</span>
+                <select id="recordType" required>
+                  <option value="INCOME">Income</option>
+                  <option value="EXPENSE">Expense</option>
+                </select>
+              </label>
+              <label>
+                <span>Category</span>
+                <input id="recordCategory" type="text" required />
+              </label>
+              <label>
+                <span>Date</span>
+                <input id="recordDate" type="datetime-local" required />
+              </label>
+              <label class="full-width">
+                <span>Description</span>
+                <textarea id="recordDescription" rows="3"></textarea>
+              </label>
+              <button type="submit" class="primary-button">Create Record</button>
+            </form>
+            <p id="recordMessage" class="message"></p>
+          </section>
+
+          <section class="surface-card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Query</p>
+                <h3>Filter financial records</h3>
+              </div>
+            </div>
+
+            <form id="filterForm" class="form-grid form-grid-wide">
+              <label>
+                <span>Type</span>
+                <select id="filterType">
+                  <option value="">All</option>
+                  <option value="INCOME">Income</option>
+                  <option value="EXPENSE">Expense</option>
+                </select>
+              </label>
+              <label>
+                <span>Category</span>
+                <input id="filterCategory" type="text" placeholder="Rent, Salary..." />
+              </label>
+              <label>
+                <span>Start Date</span>
+                <input id="filterStartDate" type="datetime-local" />
+              </label>
+              <label>
+                <span>End Date</span>
+                <input id="filterEndDate" type="datetime-local" />
+              </label>
+              <button type="submit" class="secondary-button">Apply Filters</button>
+            </form>
+
+            <div id="recordsMeta" class="meta-line"></div>
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody id="recordsTableBody">
+                  <tr>
+                    <td colspan="5" class="empty-table">Login as Admin or Analyst to view records.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section id="usersView" class="view-panel hidden">
+          <section class="surface-card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Admin Controls</p>
+                <h3>Create user</h3>
+              </div>
+            </div>
+
+            <form id="userCreateForm" class="form-grid">
+              <label>
+                <span>Name</span>
+                <input id="userName" type="text" required />
+              </label>
+              <label>
+                <span>Email</span>
+                <input id="userEmail" type="email" required />
+              </label>
+              <label>
+                <span>Password</span>
+                <input id="userPassword" type="password" required />
+              </label>
+              <label>
+                <span>Role</span>
+                <select id="userRole">
+                  <option value="VIEWER">Viewer</option>
+                  <option value="ANALYST">Analyst</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+              </label>
+              <label>
+                <span>Status</span>
+                <select id="userStatus">
+                  <option value="ACTIVE">Active</option>
+                  <option value="INACTIVE">Inactive</option>
+                </select>
+              </label>
+              <button type="submit" class="primary-button">Create User</button>
+            </form>
+            <p id="userCreateMessage" class="message"></p>
+          </section>
+
+          <section class="surface-card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">User Directory</p>
+                <h3>Manage users</h3>
+              </div>
+            </div>
+
+            <div id="usersList" class="user-grid empty-state">Admin login required.</div>
+            <p id="userUpdateMessage" class="message"></p>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

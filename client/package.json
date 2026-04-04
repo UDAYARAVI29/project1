@@ -1,0 +1,10 @@
+{
+  "name": "finance-dashboard-client",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Simple frontend for the finance dashboard backend assignment",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
