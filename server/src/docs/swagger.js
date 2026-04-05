@@ -7,7 +7,7 @@ export const swaggerSpec = swaggerJSDoc({
       title: "Finance Data Processing and Access Control API",
       version: "1.0.0",
       description:
-        "Backend assignment API covering role-based access, financial records CRUD, dashboard summaries, validation, and PostgreSQL persistence with Prisma.\n\nDemo Credentials:\nAdmin: admin@finance.local / Password@123\nAnalyst: analyst@finance.local / Password@123\nViewer: viewer@finance.local / Password@123"
+        "Backend assignment API covering role-based access, financial records CRUD, dashboard summaries, validation, and PostgreSQL persistence with Prisma.<br><br><b>Quick Evaluation Guide:</b><br>1. Use <code>POST /api/auth/login</code> with one of the demo accounts below.<br>2. Copy the returned token.<br>3. Click <code>Authorize</code> and paste <code>Bearer &lt;token&gt;</code>.<br>4. Test <code>GET /api/dashboard/summary</code>, <code>GET /api/users</code>, <code>GET /api/records</code>, and <code>POST /api/records</code>.<br><br><b>Role Permissions:</b><br>VIEWER: dashboard summary only<br>ANALYST: records + dashboard summary<br>ADMIN: full access to users, records, and dashboard summary<br><br><b>Demo Credentials:</b><br>Admin: admin@finance.local / Password@123<br>Analyst: analyst@finance.local / Password@123<br>Viewer: viewer@finance.local / Password@123"
     },
     components: {
       securitySchemes: {
