@@ -7,7 +7,7 @@ export const swaggerSpec = swaggerJSDoc({
       title: "Finance Data Processing and Access Control API",
       version: "1.0.0",
       description:
-        "Backend assignment API covering role-based access, financial records CRUD, dashboard summaries, validation, and PostgreSQL persistence with Prisma."
+        "Backend assignment API covering role-based access, financial records CRUD, dashboard summaries, validation, and PostgreSQL persistence with Prisma.\n\nDemo Credentials:\nAdmin: admin@finance.local / Password@123\nAnalyst: analyst@finance.local / Password@123\nViewer: viewer@finance.local / Password@123"
     },
     components: {
       securitySchemes: {
